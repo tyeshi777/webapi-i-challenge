@@ -12,7 +12,7 @@ server.get("/api/users", (req, res) => {
   db.find()
     .then(users => {
       console.log("users", users);
-      res.status(201).json(users);
+      res.status(200).json(users);
     })
     .catch(err => {
       res.status(500).json({ error: err, message: "cannot get the data" });
@@ -31,6 +31,29 @@ server.post("/api/users", (req, res) => {
     });
 });
 
+server.delete("/api/users/:id", (req, res) => {
+  const userId = req.params.id;
+
+  db.remove(userId)
+    .then(deleted => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      res.status(500).json({ error: err, message: "cannot delete by id" });
+    });
+});
+
+server.get("/api/users/:id", (req, res) => {
+  const userId = req.params.id;
+
+  db.findById(userId)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ error: err, message: "cannot delete" });
+    });
+});
 server.listen(5000, () => {
   console.log("\n*** API running on port 5k ***\n");
 });
