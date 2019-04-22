@@ -54,6 +54,20 @@ server.get("/api/users/:id", (req, res) => {
       res.status(500).json({ error: err, message: "cannot delete" });
     });
 });
+
+server.put("/api/users/:id", (req, res) => {
+  const userId = req.params.id;
+  const userBody = req.body;
+
+  db.update(userId, userBody)
+    .then(user => {
+      console.log(user);
+      res.status(201).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ err: error, message: "cannot update" });
+    });
+});
 server.listen(5000, () => {
   console.log("\n*** API running on port 5k ***\n");
 });
